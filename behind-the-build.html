@@ -266,13 +266,14 @@ footer{color:var(--muted);font-size:13px}
 .tv-fallback{margin:0;font-size:14px;color:var(--muted)}
 .tv .glass{aspect-ratio:16/9;max-width:100%;background:repeating-linear-gradient(0deg,#120d1a 0 3px,#17111f 3px 6px);display:grid;place-items:center;text-align:center;color:var(--muted);font-family:var(--display);font-size:18px;padding:16px}
 .bb-lede{margin:-4px 0 0;color:var(--muted);max-width:62ch}
-.plan{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:18px}
-.pcard{background:var(--panel);border:3px solid var(--line);display:flex;flex-direction:column;min-width:0;box-shadow:4px 4px 0 var(--ink)}
-.pcard canvas{display:block;width:100%;aspect-ratio:32/20;max-width:100%;image-rendering:pixelated;border-bottom:3px solid var(--line)}
-.pbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
-.pbody .pn{margin:0;font-family:var(--body);font-weight:700;font-size:13px;text-transform:uppercase;color:var(--marigold);letter-spacing:.08em}
-.pbody h3{font-size:23px;font-weight:700;letter-spacing:.01em;line-height:1.15}
-.pbody p{margin:0;font-size:16px;line-height:1.55}
+.plan{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.plan{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pcard{background:var(--panel);border:2px solid var(--line);display:flex;flex-direction:column;min-width:0;box-shadow:3px 3px 0 var(--ink)}
+.pcard canvas{display:block;width:100%;aspect-ratio:32/20;max-width:100%;image-rendering:pixelated;border-bottom:2px solid var(--line)}
+.pbody{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px}
+.pbody .pn{margin:0;font-family:var(--body);font-weight:700;font-size:11px;text-transform:uppercase;color:var(--marigold);letter-spacing:.08em}
+.pbody h3{font-size:17px;font-weight:700;letter-spacing:.01em;line-height:1.2}
+.pbody p{margin:0;font-size:14px;line-height:1.5}
 .soon{background:var(--panel);border:3px dashed var(--line);padding:18px;color:var(--muted);margin:0}
 .soon b{color:var(--marigold);font-family:var(--display)}
 </style>
