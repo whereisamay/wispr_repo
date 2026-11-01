@@ -259,7 +259,7 @@ footer{color:var(--muted);font-size:13px}
   background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),
              radial-gradient(ellipse at center,transparent 58%,rgba(10,6,16,.55) 100%);
   box-shadow:inset 0 0 40px rgba(58,214,191,.10)}
-.tv-bar{display:flex;align-items:center;gap:10px;padding:12px 6px 2px;font-family:var(--pixel-legible);font-size:10px;color:var(--muted);letter-spacing:.06em}
+.tv-bar{display:flex;align-items:center;gap:10px;padding:12px 6px 2px;font-family:var(--body);font-weight:700;font-size:13px;color:var(--muted);letter-spacing:.06em}
 .tv-bar .led{width:9px;height:9px;background:var(--coral);box-shadow:0 0 8px var(--coral)}
 .tv-bar .knobs{margin-left:auto;display:flex;gap:8px}
 .tv-bar .knobs i{width:18px;height:18px;border-radius:50%;background:var(--panel-2);border:3px solid var(--ink);display:block}
@@ -270,9 +270,9 @@ footer{color:var(--muted);font-size:13px}
 .pcard{background:var(--panel);border:3px solid var(--line);display:flex;flex-direction:column;min-width:0;box-shadow:4px 4px 0 var(--ink)}
 .pcard canvas{display:block;width:100%;aspect-ratio:32/20;max-width:100%;image-rendering:pixelated;border-bottom:3px solid var(--line)}
 .pbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
-.pbody .pn{margin:0;font-family:var(--pixel-legible);font-size:10px;color:var(--marigold);letter-spacing:.06em}
-.pbody h3{font-size:21px}
-.pbody p{margin:0;font-size:15px}
+.pbody .pn{margin:0;font-family:var(--body);font-weight:700;font-size:13px;text-transform:uppercase;color:var(--marigold);letter-spacing:.08em}
+.pbody h3{font-size:23px;font-weight:700;letter-spacing:.01em;line-height:1.15}
+.pbody p{margin:0;font-size:16px;line-height:1.55}
 .soon{background:var(--panel);border:3px dashed var(--line);padding:18px;color:var(--muted);margin:0}
 .soon b{color:var(--marigold);font-family:var(--display)}
 </style>
@@ -314,8 +314,8 @@ footer{color:var(--muted);font-size:13px}
 const PLAN=[
   { title:"A focus-first work setup", art:"desk",
     text:"A few monitors, a proper mic and an ergonomic chair. I can run a few things side by side and stay focused, and the mic makes dictating a lot better." },
-  { title:"An electric skateboard", art:"board",
-    text:"So I can zip around the office premises fast." }
+  { title:"A portable electric cycle", art:"cycle",
+    text:"A foldable e-cycle I can carry onto the metro and ride through tight spaces, so getting to work and moving around is quick and easy." }
 ];
 const ART={
   desk:{pal:{K:'#1d1626',S:'#3ad6bf',T:'#5aa0ff',B:'#ff8a3d',L:'#f4eee2',W:'#c58b52',D:'#8a5a36',A:'#9aa3ad',M:'#e3e7ec',C:'#ff6f59',X:'#d9533f',P:'#6f6383',O:'#1d1626',k:'#b9adc9'},rows:[
@@ -339,6 +339,17 @@ const ART={
     ".D......................PP....D.",
     ".D....................PPPPPP..D.",
     ".D....................O....O..D."]},
+  cycle:P=>{ // foldable e-cycle, drawn with a few pixel lines
+    const line=(x0,y0,x1,y1,col)=>{const n=Math.max(Math.abs(x1-x0),Math.abs(y1-y0));for(let i=0;i<=n;i++)P(x0+(x1-x0)*i/n,y0+(y1-y0)*i/n,col);};
+    for(let x=0;x<32;x++)P(x,18,'#6f6383');
+    [[7,14],[24,14]].forEach(([cx,cy])=>{for(let a=0;a<64;a++){const t=a/64*Math.PI*2;P(cx+3.6*Math.cos(t),cy+3.6*Math.sin(t),'#3ad6bf');}P(cx,cy,'#9aa3ad');});
+    const O='#ff8a3d';
+    line(7,14,13,14,O);line(13,14,11,8,O);line(11,9,20,9,O);line(13,14,20,9,O);line(20,9,24,14,O);line(20,9,19,5,O);line(17,5,21,5,'#1d1626');
+    for(let x=9;x<=12;x++)P(x,7,'#1d1626');
+    for(let x=14;x<=16;x++)for(let y=11;y<=12;y++)P(x,y,'#2a2a30');P(15,11,'#ffb547');
+    P(16,9,'#f4eee2');
+    [[27,1],[26,2],[25,3],[26,3],[27,3],[28,3],[27,4],[26,5],[25,6]].forEach(([x,y])=>P(x,y,'#ffb547'));
+  },
   board:{pal:{D:'#ff8a3d',G:'#1d1626',T:'#9aa3ad',O:'#3ad6bf',B:'#2a2a30',Y:'#ffb547',S:'#b9adc9',R:'#6f6383'},rows:[
     "................................",
     "................................",
@@ -363,6 +374,7 @@ const ART={
 };
 function drawArt(c,key){const a=ART[key],px=8,g=c.getContext('2d');c.width=32*px;c.height=20*px;
   g.fillStyle='#322a42';g.fillRect(0,0,c.width,c.height);
+  if(typeof a==='function'){const P=(x,y,col)=>{g.fillStyle=col;g.fillRect(Math.round(x)*px,Math.round(y)*px,px,px);};a(P);return;}
   a.rows.forEach((row,y)=>[...row.padEnd(32,'.').slice(0,32)].forEach((ch,x)=>{const col=a.pal[ch];if(col){g.fillStyle=col;g.fillRect(x*px,y*px,px,px);}}));}
 document.getElementById('plan').innerHTML=PLAN.map((it,i)=>`<li class="pcard"><canvas data-art="${it.art}" role="img" aria-label="Pixel illustration: ${it.title}"></canvas>
   <div class="pbody"><p class="pn">Item ${i+1}</p><h3>${it.title}</h3><p>${it.text}</p></div></li>`).join('');
