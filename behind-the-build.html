@@ -252,6 +252,18 @@ footer{color:var(--muted);font-size:13px}
 .bb-sec{display:flex;flex-direction:column;gap:14px}
 .bb-sec h2{font-size:clamp(26px,3.6vw,34px)}
 .tv{background:var(--panel);border:3px solid var(--line);padding:14px;box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--line);border-radius:6px}
+.screen-crt{position:relative;aspect-ratio:16/10;max-width:100%;background:#0e0b14;border:4px solid var(--ink);border-radius:18px/14px;overflow:hidden;box-shadow:inset 0 0 0 2px #3a3150}
+.screen-crt iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:contrast(1.06) saturate(1.15) sepia(.08)}
+/* CRT treatment drawn on top; clicks pass straight through to the player */
+.crt-fx{position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px),
+             radial-gradient(ellipse at center,transparent 58%,rgba(10,6,16,.55) 100%);
+  box-shadow:inset 0 0 40px rgba(58,214,191,.10)}
+.tv-bar{display:flex;align-items:center;gap:10px;padding:12px 6px 2px;font-family:var(--pixel-legible);font-size:10px;color:var(--muted);letter-spacing:.06em}
+.tv-bar .led{width:9px;height:9px;background:var(--coral);box-shadow:0 0 8px var(--coral)}
+.tv-bar .knobs{margin-left:auto;display:flex;gap:8px}
+.tv-bar .knobs i{width:18px;height:18px;border-radius:50%;background:var(--panel-2);border:3px solid var(--ink);display:block}
+.tv-fallback{margin:0;font-size:14px;color:var(--muted)}
 .tv .glass{aspect-ratio:16/9;max-width:100%;background:repeating-linear-gradient(0deg,#120d1a 0 3px,#17111f 3px 6px);display:grid;place-items:center;text-align:center;color:var(--muted);font-family:var(--display);font-size:18px;padding:16px}
 .soon{background:var(--panel);border:3px dashed var(--line);padding:18px;color:var(--muted);margin:0}
 .soon b{color:var(--marigold);font-family:var(--display)}
@@ -271,7 +283,17 @@ footer{color:var(--muted);font-size:13px}
 
 <section class="bb-sec" aria-labelledby="rec">
   <h2 id="rec">The recording</h2>
-  <div class="tv"><div class="glass">▶ Recording coming soon</div></div>
+  <div class="tv">
+    <div class="screen-crt">
+      <iframe src="https://www.loom.com/embed/8b3211ff2b444c2098b847e7efd371bd" title="Behind the Build: screen recording" allow="fullscreen" allowfullscreen loading="lazy"></iframe>
+      <div class="crt-fx" aria-hidden="true"></div>
+    </div>
+    <div class="tv-bar" aria-hidden="true">
+      <span class="led"></span><span class="ch">CH 01 · BEHIND THE BUILD</span>
+      <span class="knobs"><i></i><i></i></span>
+    </div>
+  </div>
+  <p class="tv-fallback">Video not loading? <a href="https://www.loom.com/share/8b3211ff2b444c2098b847e7efd371bd" target="_blank" rel="noopener">Watch it on Loom ↗</a></p>
 </section>
 
 <section class="bb-sec" aria-labelledby="think">
