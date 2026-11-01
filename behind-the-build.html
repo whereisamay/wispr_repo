@@ -266,7 +266,7 @@ footer{color:var(--muted);font-size:13px}
 .tv-fallback{margin:0;font-size:14px;color:var(--muted)}
 .tv .glass{aspect-ratio:16/9;max-width:100%;background:repeating-linear-gradient(0deg,#120d1a 0 3px,#17111f 3px 6px);display:grid;place-items:center;text-align:center;color:var(--muted);font-family:var(--display);font-size:18px;padding:16px}
 .bb-lede{margin:-4px 0 0;color:var(--muted);max-width:62ch}
-.plan{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:18px}
+.plan{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:18px}
 .pcard{background:var(--panel);border:3px solid var(--line);display:flex;flex-direction:column;min-width:0;box-shadow:4px 4px 0 var(--ink)}
 .pcard canvas{display:block;width:100%;aspect-ratio:32/20;max-width:100%;image-rendering:pixelated;border-bottom:3px solid var(--line)}
 .pbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
@@ -315,7 +315,11 @@ const PLAN=[
   { title:"A focus-first work setup", art:"desk",
     text:"A few monitors, a proper mic and an ergonomic chair. I can run a few things side by side and stay focused, and the mic makes dictating a lot better." },
   { title:"A portable electric cycle", art:"cycle",
-    text:"A foldable e-cycle I can carry onto the metro and ride through tight spaces, so getting to work and moving around is quick and easy." }
+    text:"A foldable e-cycle I can carry onto the metro and ride through tight spaces, so getting to work and moving around is quick and easy." },
+  { title:"A solo trip before day one", art:"trip",
+    text:"I get my best ideas when I travel. One solo trip before joining, so I start rested and full of ideas." },
+  { title:"Idea stations around the office", art:"ipad",
+    text:"A few iPads placed around the office. When an idea pops up, walk to a screen, tap one button and say it. No need to open your phone." }
 ];
 const ART={
   desk:{pal:{K:'#1d1626',S:'#3ad6bf',T:'#5aa0ff',B:'#ff8a3d',L:'#f4eee2',W:'#c58b52',D:'#8a5a36',A:'#9aa3ad',M:'#e3e7ec',C:'#ff6f59',X:'#d9533f',P:'#6f6383',O:'#1d1626',k:'#b9adc9'},rows:[
@@ -350,6 +354,26 @@ const ART={
     P(16,9,'#f4eee2');
     [[27,1],[26,2],[25,3],[26,3],[27,3],[28,3],[27,4],[26,5],[25,6]].forEach(([x,y])=>P(x,y,'#ffb547'));
   },
+  trip:P=>{ // mountains, sun and a plane: travel
+    const line=(x0,y0,x1,y1,col)=>{const n=Math.max(Math.abs(x1-x0),Math.abs(y1-y0));for(let i=0;i<=n;i++)P(x0+(x1-x0)*i/n,y0+(y1-y0)*i/n,col);};
+    for(let y=0;y<20;y++)for(let x=0;x<32;x++)if(y>=4&&y<17&&((x*7+y*13)%37===0))P(x,y,'#4a3f62');
+    for(let y=-3;y<=3;y++)for(let x=-3;x<=3;x++)if(x*x+y*y<=10)P(25+x,5+y,'#ffb547');
+    const mtn=(cx,h,base,col,cap)=>{for(let y=0;y<h;y++){for(let x=-y;x<=y;x++)P(cx+x,base-h+y,(y<2&&cap)?'#f4eee2':col);}};
+    mtn(9,9,18,'#5aa0ff',true);mtn(19,7,18,'#3ad6bf',true);mtn(28,5,18,'#5aa0ff',false);
+    for(let x=0;x<32;x++){P(x,18,'#6f6383');P(x,19,'#6f6383');}
+    const pl='#f4eee2';line(3,4,9,4,pl);P(6,3,pl);P(6,5,pl);P(5,2,pl);P(5,6,pl);P(3,3,pl);
+    for(let x=0;x<3;x+=2)P(x-1,4,'#b9adc9');
+  },
+  ipad:P=>{ // a wall-mounted tablet with a big talk button and sound waves
+    for(let x=0;x<32;x++){P(x,18,'#6f6383');P(x,19,'#6f6383');}
+    for(let y=14;y<18;y++)P(13,y,'#9aa3ad');for(let x=10;x<=16;x++)P(x,17,'#9aa3ad');
+    for(let y=3;y<=14;y++)for(let x=6;x<=20;x++)P(x,y,'#1d1626');
+    for(let y=4;y<=13;y++)for(let x=7;x<=19;x++)P(x,y,'#3ad6bf');
+    for(let y=5;y<=12;y++)for(let x=9;x<=16;x++){const dx=x-12.5,dy=y-8.5;if(dx*dx+dy*dy<=13)P(x,y,'#ff6f59');}
+    const W='#f4eee2';[[12,6],[13,6],[12,7],[13,7],[12,8],[13,8],[11,8],[14,8],[11,9],[14,9],[12,10],[13,10],[11,11],[12,11],[13,11],[14,11]].forEach(([x,y])=>P(x,y,W));
+    [[5,'#ffb547'],[7,'#ff8a3d'],[9,'#ffb547']].forEach(([r,col])=>{for(let d=-45;d<=45;d+=6){const t=d*Math.PI/180;P(17+r*Math.cos(t),8.5+r*Math.sin(t),col);}});
+    [[3,1],[2,2],[3,2],[4,2],[2,3],[3,3],[4,3],[3,4]].forEach(([x,y])=>P(x,y,'#ffb547'));P(3,5,'#9aa3ad');
+  },
   board:{pal:{D:'#ff8a3d',G:'#1d1626',T:'#9aa3ad',O:'#3ad6bf',B:'#2a2a30',Y:'#ffb547',S:'#b9adc9',R:'#6f6383'},rows:[
     "................................",
     "................................",
@@ -377,7 +401,7 @@ function drawArt(c,key){const a=ART[key],px=8,g=c.getContext('2d');c.width=32*px
   if(typeof a==='function'){const P=(x,y,col)=>{g.fillStyle=col;g.fillRect(Math.round(x)*px,Math.round(y)*px,px,px);};a(P);return;}
   a.rows.forEach((row,y)=>[...row.padEnd(32,'.').slice(0,32)].forEach((ch,x)=>{const col=a.pal[ch];if(col){g.fillStyle=col;g.fillRect(x*px,y*px,px,px);}}));}
 document.getElementById('plan').innerHTML=PLAN.map((it,i)=>`<li class="pcard"><canvas data-art="${it.art}" role="img" aria-label="Pixel illustration: ${it.title}"></canvas>
-  <div class="pbody"><p class="pn">Item ${i+1}</p><h3>${it.title}</h3><p>${it.text}</p></div></li>`).join('');
+  <div class="pbody"><p class="pn">Area ${i+1}</p><h3>${it.title}</h3><p>${it.text}</p></div></li>`).join('');
 document.querySelectorAll('.pcard canvas').forEach(c=>drawArt(c,c.dataset.art));
 </script>
 </div>
