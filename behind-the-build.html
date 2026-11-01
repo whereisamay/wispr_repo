@@ -265,6 +265,14 @@ footer{color:var(--muted);font-size:13px}
 .tv-bar .knobs i{width:18px;height:18px;border-radius:50%;background:var(--panel-2);border:3px solid var(--ink);display:block}
 .tv-fallback{margin:0;font-size:14px;color:var(--muted)}
 .tv .glass{aspect-ratio:16/9;max-width:100%;background:repeating-linear-gradient(0deg,#120d1a 0 3px,#17111f 3px 6px);display:grid;place-items:center;text-align:center;color:var(--muted);font-family:var(--display);font-size:18px;padding:16px}
+.bb-lede{margin:-4px 0 0;color:var(--muted);max-width:62ch}
+.plan{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:18px}
+.pcard{background:var(--panel);border:3px solid var(--line);display:flex;flex-direction:column;min-width:0;box-shadow:4px 4px 0 var(--ink)}
+.pcard canvas{display:block;width:100%;aspect-ratio:32/20;max-width:100%;image-rendering:pixelated;border-bottom:3px solid var(--line)}
+.pbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px}
+.pbody .pn{margin:0;font-family:var(--pixel-legible);font-size:10px;color:var(--marigold);letter-spacing:.06em}
+.pbody h3{font-size:21px}
+.pbody p{margin:0;font-size:15px}
 .soon{background:var(--panel);border:3px dashed var(--line);padding:18px;color:var(--muted);margin:0}
 .soon b{color:var(--marigold);font-family:var(--display)}
 </style>
@@ -278,7 +286,7 @@ footer{color:var(--muted);font-size:13px}
 
 <header class="bb-hero">
   <h1>Behind the <span>Build</span></h1>
-  <p>How this portfolio came together: the recording, the thinking behind it, and what I'd build next.</p>
+  <p>How this portfolio came together, and what I'd do next.</p>
 </header>
 
 <section class="bb-sec" aria-labelledby="rec">
@@ -296,15 +304,70 @@ footer{color:var(--muted);font-size:13px}
   <p class="tv-fallback">Video not loading? <a href="https://www.loom.com/share/8b3211ff2b444c2098b847e7efd371bd" target="_blank" rel="noopener">Watch it on Loom ↗</a></p>
 </section>
 
-<section class="bb-sec" aria-labelledby="think">
-  <h2 id="think">The thinking</h2>
-  <p class="soon"><b>Loading…</b> The story behind this portfolio is being written up.</p>
-</section>
-
 <section class="bb-sec" aria-labelledby="k3">
   <h2 id="k3">What I'd do with $3,000</h2>
-  <p class="soon"><b>Loading…</b> The plan lands here soon.</p>
+  <p class="bb-lede">If the $3,000 setup comes through, here's where it goes.</p>
+  <ul class="plan" id="plan"></ul>
 </section>
+<script>
+/* $3,000 plan: one card per item, each with a pixel-art picture. Add items to PLAN. */
+const PLAN=[
+  { title:"A focus-first work setup", art:"desk",
+    text:"A few monitors, a proper mic and an ergonomic chair. I can run a few things side by side and stay focused, and the mic makes dictating a lot better." },
+  { title:"An electric skateboard", art:"board",
+    text:"So I can zip around the office premises fast." }
+];
+const ART={
+  desk:{pal:{K:'#1d1626',S:'#3ad6bf',T:'#5aa0ff',B:'#ff8a3d',L:'#f4eee2',W:'#c58b52',D:'#8a5a36',A:'#9aa3ad',M:'#e3e7ec',C:'#ff6f59',X:'#d9533f',P:'#6f6383',O:'#1d1626',k:'#b9adc9'},rows:[
+    "AAA.............................",
+    "A...............................",
+    "A.KKKKKKKK.KKKKKKKKKK.KKKKKKKK..",
+    "MM.SSSSSSK.KTTTTTTTTK.KBBBBBBK..",
+    "kk.SLLLSSK.KTLLLLTTTK.KBLLBBBK..",
+    "MM.SSSSSSK.KTTTTTTTTK.KBBBBBBK..",
+    "kk.SLLSSSK.KTLLTTTTTK.KBLLLBBK..",
+    "MM.SSSSSSK.KTTTTTTTTK.KBBBBBBK..",
+    "A.KKKKKKKK.KKKKKKKKKK.KKKKKKKK..",
+    "A.....KK.......KK.........KK....",
+    "A.....KK.......KK......CCCC.....",
+    "A...KKKKKK..KKKKKK.....CCCC.....",
+    "A.......kkkkkkkk.......CCCC.....",
+    "WWWWWWWWWWWWWWWWWWWWWWWCCCCWWWWW",
+    ".D.....................CCCC...D.",
+    ".D....................XXXXXX..D.",
+    ".D......................PP....D.",
+    ".D......................PP....D.",
+    ".D....................PPPPPP..D.",
+    ".D....................O....O..D."]},
+  board:{pal:{D:'#ff8a3d',G:'#1d1626',T:'#9aa3ad',O:'#3ad6bf',B:'#2a2a30',Y:'#ffb547',S:'#b9adc9',R:'#6f6383'},rows:[
+    "................................",
+    "................................",
+    "........................YY......",
+    ".......................YY.......",
+    "......................YYYYY.....",
+    "........................YY......",
+    ".......................YY.......",
+    "......................Y.........",
+    "................................",
+    "SSS.............................",
+    "..SSSS..........................",
+    "SS.....D....................D...",
+    "..SSS...DDDDDDDDDDDDDDDDDDDD....",
+    "SSSS....GGGGGGGGGGGGGGGGGGGG....",
+    "..........TT...BBBBBB...TT......",
+    "S........OOOO..BYYYYB..OOOO.....",
+    "..SS.....OOOO..BBBBBB..OOOO.....",
+    "................................",
+    "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",
+    "................................"]}
+};
+function drawArt(c,key){const a=ART[key],px=8,g=c.getContext('2d');c.width=32*px;c.height=20*px;
+  g.fillStyle='#322a42';g.fillRect(0,0,c.width,c.height);
+  a.rows.forEach((row,y)=>[...row.padEnd(32,'.').slice(0,32)].forEach((ch,x)=>{const col=a.pal[ch];if(col){g.fillStyle=col;g.fillRect(x*px,y*px,px,px);}}));}
+document.getElementById('plan').innerHTML=PLAN.map((it,i)=>`<li class="pcard"><canvas data-art="${it.art}" role="img" aria-label="Pixel illustration: ${it.title}"></canvas>
+  <div class="pbody"><p class="pn">Item ${i+1}</p><h3>${it.title}</h3><p>${it.text}</p></div></li>`).join('');
+document.querySelectorAll('.pcard canvas').forEach(c=>drawArt(c,c.dataset.art));
+</script>
 </div>
 </body>
 </html>
