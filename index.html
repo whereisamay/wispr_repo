@@ -808,7 +808,18 @@ function drawSign(s){
   const w=WORLDS[wi],c=w.color,d=w.signs[s.k],isOpen=s===openSign,near=s===zoneSign;
   const unread=!s.seen&&!isOpen;
   R(x+16,BTOP+BH,5,GY-BTOP-BH,'#2b2238');R(x+BW-21,BTOP+BH,5,GY-BTOP-BH,'#2b2238');R(x+12,BTOP+BH+18,BW-24,3,'#2b2238');
+  if(unread){ // unread: pulsing glow + chasing marquee lights around the frame, so it reads as "open me"
+    const pulse=REDUCED?0.6:0.45+0.35*Math.sin(animT*0.12);
+    ctx.globalAlpha=pulse*0.55;R(x-9,BTOP-9,BW+18,BH+18,c);ctx.globalAlpha=pulse;R(x-6,BTOP-6,BW+12,BH+12,c);ctx.globalAlpha=1;
+    R(x-4,BTOP-4,BW+8,BH+8,'#1d1626');
+  }
   R(x-3,BTOP-3,BW+6,BH+6,unread?c:(isOpen?c:'#4a3f62'));
+  if(unread){
+    const step=8,per=[];for(let px=0;px<=BW;px+=step){per.push([x+px,BTOP-3]);}for(let py=step;py<=BH;py+=step){per.push([x+BW,BTOP-3+py]);}
+    for(let px=BW-step;px>=0;px-=step){per.push([x+px,BTOP+BH+3]);}for(let py=BH-step;py>0;py-=step){per.push([x,BTOP-3+py]);}
+    const ph=REDUCED?0:Math.floor(animT/6);
+    per.forEach(([bx,by],k)=>{const on=(k+ph)%3!==0;R(bx-1.5,by-1.5,3,3,on?'#fff6d6':'#7a6a40');});
+  }
   R(x,BTOP,BW,BH,'#1d1626');
   R(x+3,BTOP+3,BW-6,BH-6,isOpen?c:(unread?(near?'#3a3050':'#2e2540'):'#241d30'));
   const ink=isOpen?'#1d1626':(unread?'#f4eee2':'#8e82a3');
